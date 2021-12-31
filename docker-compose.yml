@@ -5,6 +5,7 @@ services:
     ports:
       - "9090:8080"
       - "7077:7077"
+      - "10001:10001"
     volumes:
        - ./apps:/opt/spark-apps
        - ./data:/opt/spark-data
