@@ -180,10 +180,11 @@ pyspark
 ```docker exec -ti <container-id> /opt/spark/sbin/start-thriftserver.sh --hiveconf hive.server2.thrift.port=10001```
 
 Now you should be able to connect to Spark using Simba JDBC driver with following connection properties:
-JDBC url: jdbc:spark://localhost:10001/default
-"AuthMech": "2"
-"UID": "root"
-"transportMode": "sasl"
+
+* JDBC url: jdbc:spark://localhost:10001/default
+* "AuthMech": "2"
+* "UID": "root"
+* "transportMode": "sasl"
 
 # What's left to do?
 
