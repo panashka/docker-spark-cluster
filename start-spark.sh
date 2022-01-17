@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# turn on bash's job control
+set -m
+
 . "/opt/spark/bin/load-spark-env.sh"
 
 if [ "$SPARK_WORKLOAD" == "master" ];
@@ -7,7 +10,16 @@ then
 
 export SPARK_MASTER_HOST=`hostname`
 
-cd /opt/spark/bin && ./spark-class org.apache.spark.deploy.master.Master --ip $SPARK_MASTER_HOST --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT >> $SPARK_MASTER_LOG
+cd /opt/spark
+./bin/spark-class org.apache.spark.deploy.master.Master --ip $SPARK_MASTER_HOST --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT >> $SPARK_MASTER_LOG &
+sleep 1
+# run thrift server
+./sbin/start-thriftserver.sh --hiveconf hive.server2.thrift.port=10001
+# run livy server
+./apache-livy/bin/livy-server start
+
+# bring master process back to foreground
+fg %1
 
 elif [ "$SPARK_WORKLOAD" == "worker" ];
 then
